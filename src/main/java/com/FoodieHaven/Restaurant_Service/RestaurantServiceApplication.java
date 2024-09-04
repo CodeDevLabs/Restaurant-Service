@@ -1,4 +1,4 @@
-package com.example.Restaurant_Service;
+package com.FoodieHaven.Restaurant_Service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
