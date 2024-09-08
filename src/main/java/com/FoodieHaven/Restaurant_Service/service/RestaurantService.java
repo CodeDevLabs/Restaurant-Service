@@ -9,7 +9,7 @@ public interface RestaurantService {
 
     RestaurantDto saveRestaurant(RestaurantDto restaurantDto);
 
-    RestaurantDto updateRestaurant(RestaurantDto restaurantDto);
+    RestaurantDto updateRestaurant(int id, RestaurantDto restaurantDto); // Update method to use ID
 
-    boolean deleteRestaurant(RestaurantDto restaurantDTO);
+    boolean deleteRestaurant(int id); // Delete method to use ID
 }

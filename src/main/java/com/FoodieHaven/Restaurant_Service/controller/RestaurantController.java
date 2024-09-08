@@ -3,22 +3,21 @@ package com.FoodieHaven.Restaurant_Service.controller;
 import com.FoodieHaven.Restaurant_Service.dto.RestaurantDto;
 import com.FoodieHaven.Restaurant_Service.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.FoodieHaven.Restaurant_Service.service.impl.RestaurantServiceImpl;
 
 import java.util.List;
 
-@RestController // Marks the class as a Spring REST controller
-@RequestMapping(value = "api/v1/restaurant") // Base URL for all endpoints in this controller
-@CrossOrigin // Allows Cross-Origin requests, useful when working with front-end clients on different domains
-
+@RestController
+@RequestMapping(value = "api/v1/restaurant")
+@CrossOrigin
 public class RestaurantController {
 
     @Autowired // Dependency injection of RestaurantService
     private RestaurantService restaurantService;
 
     @GetMapping(value = "/getRestaurant") // Handles HTTP GET requests for retrieving all restaurants
-    public List<RestaurantDto> getRestaurant(){
+    public List<RestaurantDto> getRestaurant() {
         return restaurantService.getAllRestaurants();
     }
 
@@ -27,15 +26,16 @@ public class RestaurantController {
         return restaurantService.saveRestaurant(restaurantDto);
     }
 
-    @PutMapping(value = "/updateRestaurant") // Handles HTTP PUT requests for updating an existing restaurant
-    public RestaurantDto updateRestaurant(@RequestBody RestaurantDto restaurantDto){
-        return restaurantService.updateRestaurant(restaurantDto);
+
+    @PutMapping("/updateRestaurant/{id}")
+    public ResponseEntity<RestaurantDto> updateRestaurant(@PathVariable Integer id, @RequestBody RestaurantDto restaurantDto) {
+        RestaurantDto updatedRestaurant = restaurantService.updateRestaurant(id, restaurantDto);
+        return ResponseEntity.ok(updatedRestaurant);
     }
 
-    @DeleteMapping(value = "/deleteRestaurant") // Handles HTTP DELETE requests for deleting a restaurant
-    public boolean deleteRestaurant(@RequestBody RestaurantDto restaurantDTO){
-        return restaurantService.deleteRestaurant(restaurantDTO);
-    }
 
+    @DeleteMapping(value = "/deleteRestaurant/{id}") // Handles HTTP DELETE requests for deleting a restaurant by ID
+    public boolean deleteRestaurant(@PathVariable int id) { // Extracts the restaurant ID from the URL path
+        return restaurantService.deleteRestaurant(id);
+    }
 }
-
