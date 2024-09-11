@@ -13,29 +13,33 @@ import java.util.List;
 @CrossOrigin
 public class RestaurantController {
 
-    @Autowired // Dependency injection of RestaurantService
+    @Autowired
     private RestaurantService restaurantService;
 
-    @GetMapping(value = "/getRestaurant") // Handles HTTP GET requests for retrieving all restaurants
+    @GetMapping(value = "/getRestaurant")  // Handles HTTP GET
     public List<RestaurantDto> getRestaurant() {
         return restaurantService.getAllRestaurants();
     }
 
-    @PostMapping(value = "/saveRestaurant") // Handles HTTP POST requests for saving a new restaurant
+    @GetMapping(value = "/getRestaurant/{id}") // Handles HTTP GET by ID
+    public ResponseEntity<RestaurantDto> getRestaurantById(@PathVariable Integer id) {
+        RestaurantDto restaurantDto = restaurantService.getRestaurantById(id);
+        return ResponseEntity.ok(restaurantDto);
+    }
+
+    @PostMapping(value = "/saveRestaurant") // Handles HTTP POST
     public RestaurantDto saveRestaurant(@RequestBody RestaurantDto restaurantDto) {
         return restaurantService.saveRestaurant(restaurantDto);
     }
 
-
-    @PutMapping("/updateRestaurant/{id}")
+    @PutMapping("/updateRestaurant/{id}") // Handles HTTP PUT
     public ResponseEntity<RestaurantDto> updateRestaurant(@PathVariable Integer id, @RequestBody RestaurantDto restaurantDto) {
         RestaurantDto updatedRestaurant = restaurantService.updateRestaurant(id, restaurantDto);
         return ResponseEntity.ok(updatedRestaurant);
     }
 
-
-    @DeleteMapping(value = "/deleteRestaurant/{id}") // Handles HTTP DELETE requests for deleting a restaurant by ID
-    public boolean deleteRestaurant(@PathVariable int id) { // Extracts the restaurant ID from the URL path
+    @DeleteMapping(value = "/deleteRestaurant/{id}") // Handles HTTP DELETE
+    public boolean deleteRestaurant(@PathVariable int id) {
         return restaurantService.deleteRestaurant(id);
     }
 }

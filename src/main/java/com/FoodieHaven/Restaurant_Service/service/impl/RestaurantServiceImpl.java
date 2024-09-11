@@ -24,38 +24,47 @@ public class RestaurantServiceImpl implements RestaurantService {
     private ModelMapper modelMapper;
 
     @Override
-    public List<RestaurantDto> getAllRestaurants() {
+    public List<RestaurantDto> getAllRestaurants() {  // getAllRestaurants method
         List<RestaurantEntity> restaurantList = restaurantRepository.findAll();
         return modelMapper.map(restaurantList, new TypeToken<List<RestaurantDto>>() {}.getType());
     }
 
     @Override
-    public RestaurantDto saveRestaurant(RestaurantDto restaurantDto) {
+    public RestaurantDto saveRestaurant(RestaurantDto restaurantDto) { // saveRestaurant method
         restaurantRepository.save(modelMapper.map(restaurantDto, RestaurantEntity.class));
         return restaurantDto;
     }
 
     @Override
-    public RestaurantDto updateRestaurant(int id, RestaurantDto restaurantDto) {
+    public RestaurantDto updateRestaurant(int id, RestaurantDto restaurantDto) { // updateRestaurant method
         Optional<RestaurantEntity> existingEntity = restaurantRepository.findById(id);
         if (existingEntity.isPresent()) {
             RestaurantEntity entity = existingEntity.get();
-            modelMapper.map(restaurantDto, entity); // Update entity with new values from DTO
+            modelMapper.map(restaurantDto, entity);
             restaurantRepository.save(entity);
             return restaurantDto;
         } else {
-            throw new RuntimeException("Restaurant not found"); // Handle not found scenario appropriately
+            throw new RuntimeException("Restaurant not found");
         }
     }
 
     @Override
-    public boolean deleteRestaurant(int id) {
+    public boolean deleteRestaurant(int id) { // deleteRestaurant method
         if (restaurantRepository.existsById(id)) {
             restaurantRepository.deleteById(id);
             return true;
         } else {
-            throw new RuntimeException("Restaurant not found"); // Handle not found scenario appropriately
+            throw new RuntimeException("Restaurant not found");
         }
     }
 
+    @Override
+    public RestaurantDto getRestaurantById(int id) { // getRestaurantById method
+        Optional<RestaurantEntity> restaurantEntity = restaurantRepository.findById(id);
+        if (restaurantEntity.isPresent()) {
+            return modelMapper.map(restaurantEntity.get(), RestaurantDto.class);
+        } else {
+            throw new RuntimeException("Restaurant not found");
+        }
+    }
 }
